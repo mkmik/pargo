@@ -1,3 +1,17 @@
+use clap::Clap;
+
+/// This struct defines the command line arguments we accept.
+#[derive(Clap)]
+#[clap(name = "ptap", about = "A simple CLI application.")]
+struct Opts {
+    /// An example option, use more meaningful names and descriptions for your application.
+    #[clap(short, long)]
+    example_option: String,
+}
+
 fn main() {
-    println!("Hello, world!");
+    let opts: Opts = Opts::parse();
+
+    // Use the options here
+    println!("The provided example option is: {}", opts.example_option);
 }
