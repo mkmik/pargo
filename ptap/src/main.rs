@@ -1,8 +1,8 @@
-use clap::Clap;
+use clap::{Parser, Arg};
 
 /// This struct defines the command line arguments we accept.
-#[derive(Clap)]
-#[clap(name = "ptap", about = "A simple CLI application.")]
+#[derive(Parser)]
+#[clap(author, version, about, long_about = None)]
 struct Opts {
     /// An example option, use more meaningful names and descriptions for your application.
     #[clap(short, long)]
