@@ -31,6 +31,8 @@ pub enum Error {
     InvalidPad,
     #[error("Invalid checksum")]
     InvalidChecksum,
+    #[error("Missing end block")]
+    MissingEndBlock,
 }
 
 use std::io::Write;
