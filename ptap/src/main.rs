@@ -71,7 +71,7 @@ fn dump_lda<W: Write>(buffer: &[u8], writer: &mut W) -> Result<()> {
         // Check for end-of-input condition
         if byte_count == 6 {
             if load_address % 2 == 0 {
-                writeln!(writer, "Jump to address: 0x{:04X}", load_address)?;
+                writeln!(writer, "Jump to address: {:o}", load_address)?;
             } else {
                 writeln!(writer, "Not jumping to program right after loading")?;
             }
@@ -217,7 +217,7 @@ mod tests {
             Load address: 0x0402\n\
             Hexdump:\n\
             01 02 03 04 \n\
-            Jump to address: 0x0200\n";
+            Jump to address: 1000\n";
 
         // Assert that the output is as expected
         assert_eq!(output_string, expected_output);
