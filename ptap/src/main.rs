@@ -68,7 +68,7 @@ fn dump_lda(buffer: &[u8]) -> Result<()> {
             if load_address % 2 == 0 {
                 println!("Jump to address: 0x{:04X}", load_address);
             } else {
-                println!("Halt at address: 0x{:04X}", load_address);
+                println!("Not jumping to program right after loading");
             }
             break;
         }
