@@ -4,11 +4,27 @@ use clap::Parser;
 #[derive(Parser)]
 #[clap(author, version, about, long_about = None)]
 struct Opts {
+    #[clap(subcommand)]
+    command: Commands,
+}
+
+#[derive(Parser)]
+enum Commands {
+    /// Dump command to process a file
+    Dump {
+        /// The filename to process
+        #[clap(required = true)]
+        filename: String,
+    },
 }
 
 fn main() {
     let opts: Opts = Opts::parse();
 
-    // The example_option has been removed, so the usage here should be updated accordingly.
-    // For now, the main function will be empty.
+    match opts.command {
+        Commands::Dump { filename } => {
+            // Implement the logic for the dump command here
+            println!("Processing file: {}", filename);
+        }
+    }
 }
