@@ -66,9 +66,9 @@ fn dump_lda(buffer: &[u8]) -> Result<()> {
         // Check for end-of-input condition
         if byte_count == 6 {
             if load_address % 2 == 0 {
-                // Jump to address (not implemented)
+                println!("Jump to address: 0x{:04X}", load_address);
             } else {
-                // Halt (not implemented)
+                println!("Halt at address: 0x{:04X}", load_address);
             }
             break;
         }
