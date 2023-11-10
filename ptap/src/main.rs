@@ -1,4 +1,4 @@
-use clap::{Parser, Arg};
+use clap::Parser;
 
 /// This struct defines the command line arguments we accept.
 #[derive(Parser)]
