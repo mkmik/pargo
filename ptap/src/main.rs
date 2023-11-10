@@ -118,7 +118,7 @@ fn main() -> Result<()> {
 
     match opts.command {
         Commands::Dump { filename } => {
-            let mut file = File::open(&filename)?;
+            let mut file = File::open(filename)?;
             let mut buffer = Vec::new();
             file.read_to_end(&mut buffer)?;
             dump_lda(&buffer)?;
