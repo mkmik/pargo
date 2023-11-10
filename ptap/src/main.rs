@@ -1,4 +1,8 @@
+use anyhow::Result;
 use clap::Parser;
+use std::fs::File;
+use std::io::{self, Read};
+use thiserror::Error;
 
 /// This struct defines the command line arguments we accept.
 #[derive(Parser)]
@@ -18,9 +22,16 @@ enum Commands {
     },
 }
 
-use std::fs::File;
-use anyhow::Result;
-use std::io::Read;
+#[derive(Error, Debug)]
+pub enum Error {
+    #[error("Error opening file: {0}")]
+    FileOpen(#[from] io::Error),
+    #[error("Invalid start marker")]
+    InvalidStartMarker,
+    #[error("Invalid pad")]
+    InvalidPad,
+    // Add other error variants here as needed
+}
 
 fn main() -> Result<()> {
     let opts: Opts = Opts::parse();
@@ -44,18 +55,19 @@ fn main() -> Result<()> {
                 }
 
                 if buffer[cursor] != 0x01 {
-                    return Err(io::Error::new(ErrorKind::InvalidData, "Invalid start marker"));
+                    return Err(Error::InvalidStartMarker.into());
                 }
                 cursor += 1; // Skip start marker
 
                 if buffer[cursor] != 0x00 {
-                    return Err(io::Error::new(ErrorKind::InvalidData, "Invalid pad"));
+                    return Err(Error::InvalidPad.into());
                 }
                 cursor += 1; // Skip pad
 
                 // Read block header
                 let byte_count = buffer[cursor] as usize + ((buffer[cursor + 1] as usize) << 8);
-                let load_address = buffer[cursor + 2] as usize + ((buffer[cursor + 3] as usize) << 8);
+                let load_address =
+                    buffer[cursor + 2] as usize + ((buffer[cursor + 3] as usize) << 8);
                 cursor += 4;
 
                 // Check for end-of-input condition
