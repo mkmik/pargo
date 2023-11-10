@@ -113,7 +113,11 @@ fn dump_lda<W: Write>(buffer: &[u8], writer: &mut W) -> Result<()> {
         }
     }
 
-    Ok(())
+    if cursor >= buffer.len() && !end_block_encountered {
+        Err(Error::MissingEndBlock.into())
+    } else {
+        Ok(())
+    }
 }
 
 fn main() -> Result<()> {
