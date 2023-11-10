@@ -1,7 +1,6 @@
 use anyhow::Result;
 use clap::Parser;
-use std::fs::File;
-use std::io::{self, Read};
+use std::io::{self};
 use thiserror::Error;
 
 /// This struct defines the command line arguments we accept.
