@@ -114,6 +114,21 @@ fn dump_lda<W: Write>(buffer: &[u8], writer: &mut W) -> Result<()> {
     Ok(())
 }
 
+fn main() -> Result<()> {
+    let opts: Opts = Opts::parse();
+
+    match opts.command {
+        Commands::Dump { filename } => {
+            let buffer = std::fs::read(filename)?;
+            let stdout = io::stdout();
+            let mut handle = stdout.lock();
+            dump_lda(&buffer, &mut handle)?;
+        }
+    }
+
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -152,19 +167,4 @@ mod tests {
 
         Ok(())
     }
-}
-
-fn main() -> Result<()> {
-    let opts: Opts = Opts::parse();
-
-    match opts.command {
-        Commands::Dump { filename } => {
-            let buffer = std::fs::read(filename)?;
-            let stdout = io::stdout();
-            let mut handle = stdout.lock();
-            dump_lda(&buffer, &mut handle)?;
-        }
-    }
-
-    Ok(())
 }
