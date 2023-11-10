@@ -89,11 +89,11 @@ fn main() -> Result<()> {
                 let checksum = buffer[cursor];
                 cursor += 1;
 
-                // Calculate checksum excluding the checksum byte itself
-                let calculated_checksum: u8 = program_data.iter().fold(0, |acc, &x| acc.wrapping_add(x)) + 1;
+                // Calculate checksum including the checksum byte
+                let calculated_checksum: u8 = program_data.iter().fold(checksum, |acc, &x| acc.wrapping_add(x));
                 
-                // Verify checksum
-                if calculated_checksum != checksum {
+                // Verify checksum by checking if the calculated checksum is zero
+                if calculated_checksum != 0 {
                     return Err(Error::InvalidChecksum.into());
                 }
 
