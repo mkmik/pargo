@@ -69,7 +69,7 @@ fn dump_lda<W: Write>(buffer: &[u8], writer: &mut W) -> Result<()> {
             if load_address % 2 == 0 {
                 writeln!(writer, "Jump to address: 0x{:04X}", load_address)?;
             } else {
-                writeln!("Not jumping to program right after loading");
+                writeln!(writer, "Not jumping to program right after loading")?;
             }
             break;
         }
@@ -94,20 +94,20 @@ fn dump_lda<W: Write>(buffer: &[u8], writer: &mut W) -> Result<()> {
         }
 
         // Print block info
-        writeln!("Block info:");
-        writeln!("Byte count: {}", byte_count - 6);
-        writeln!("Load address: 0x{:04X}", load_address);
+        writeln!(writer, "Block info:")?;
+        writeln!(writer, "Byte count: {}", byte_count - 6)?;
+        writeln!(writer, "Load address: 0x{:04X}", load_address)?;
 
         // Print hexdump
-        writeln!("Hexdump:");
+        writeln!(writer, "Hexdump:")?;
         for (index, byte) in program_data.iter().enumerate() {
-            write!("{:02X} ", byte);
+            write!(writer, "{:02X} ", byte)?;
             if (index + 1) % 16 == 0 {
-                writeln!();
+                writeln!(writer)?;
             }
         }
         if program_data.len() % 16 != 0 {
-            writeln!(); // Ensure we end with a newline if not exactly 16 bytes per line
+            writeln!(writer)?; // Ensure we end with a newline if not exactly 16 bytes per line
         }
     }
 
