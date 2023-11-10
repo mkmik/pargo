@@ -58,6 +58,7 @@ fn main() -> Result<()> {
                 if buffer[cursor] != 0x01 {
                     return Err(Error::InvalidStartMarker.into());
                 }
+                let block_start = cursor;
                 cursor += 1; // Skip start marker
 
                 if buffer[cursor] != 0x00 {
@@ -82,17 +83,19 @@ fn main() -> Result<()> {
                 }
 
                 // Read program data
-                let program_data = &buffer[cursor..cursor + byte_count - 6];
+                let block_data = &buffer[block_start..block_start + byte_count]; // Include header in checksum calculation
+                let program_data = &block_data[6..];
                 cursor += byte_count - 6;
 
                 // Read and verify checksum
-                let checksum = buffer[cursor];
+                let checksum = buffer[block_start + byte_count];
                 cursor += 1;
 
                 // Calculate checksum over the entire block, including the header
-                let block_data = &buffer[cursor - 6..cursor]; // Include header in checksum calculation
-                let calculated_checksum: u8 = block_data.iter().fold(checksum, |acc, &x| acc.wrapping_add(x));
-                
+                let calculated_checksum: u8 = block_data
+                    .iter()
+                    .fold(checksum, |acc, &x| acc.wrapping_add(x));
+
                 // Verify checksum by checking if the calculated checksum is zero
                 if calculated_checksum != 0 {
                     return Err(Error::InvalidChecksum.into());
