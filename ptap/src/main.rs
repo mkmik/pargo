@@ -34,7 +34,9 @@ pub enum Error {
     InvalidChecksum,
 }
 
-fn dump_lda(buffer: &[u8]) -> Result<()> {
+use std::io::Write;
+
+fn dump_lda<W: Write>(buffer: &[u8], writer: &mut W) -> Result<()> {
     let mut cursor = 0;
     while cursor < buffer.len() {
         // Skip leader bytes (0x00)
@@ -66,7 +68,7 @@ fn dump_lda(buffer: &[u8]) -> Result<()> {
         // Check for end-of-input condition
         if byte_count == 6 {
             if load_address % 2 == 0 {
-                println!("Jump to address: 0x{:04X}", load_address);
+                writeln!(writer, "Jump to address: 0x{:04X}", load_address)?;
             } else {
                 println!("Not jumping to program right after loading");
             }
@@ -121,7 +123,9 @@ fn main() -> Result<()> {
             let mut file = File::open(filename)?;
             let mut buffer = Vec::new();
             file.read_to_end(&mut buffer)?;
-            dump_lda(&buffer)?;
+            let stdout = io::stdout();
+            let mut handle = stdout.lock();
+            dump_lda(&buffer, &mut handle)?;
         }
     }
 
