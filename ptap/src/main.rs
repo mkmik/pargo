@@ -30,7 +30,8 @@ pub enum Error {
     InvalidStartMarker,
     #[error("Invalid pad")]
     InvalidPad,
-    // Add other error variants here as needed
+    #[error("Invalid checksum")]
+    InvalidChecksum,
 }
 
 fn main() -> Result<()> {
@@ -88,7 +89,30 @@ fn main() -> Result<()> {
                 let checksum = buffer[cursor];
                 cursor += 1;
 
-                // TODO: Calculate and verify checksum, print block info and hexdump
+                // Calculate checksum
+                let calculated_checksum: u8 = program_data.iter().fold(0, |acc, &x| acc.wrapping_add(x));
+                
+                // Verify checksum
+                if calculated_checksum != checksum {
+                    return Err(Error::InvalidChecksum.into());
+                }
+
+                // Print block info
+                println!("Block info:");
+                println!("Byte count: {}", byte_count - 6);
+                println!("Load address: 0x{:04X}", load_address);
+
+                // Print hexdump
+                println!("Hexdump:");
+                for (index, byte) in program_data.iter().enumerate() {
+                    print!("{:02X} ", byte);
+                    if (index + 1) % 16 == 0 {
+                        println!();
+                    }
+                }
+                if program_data.len() % 16 != 0 {
+                    println!(); // Ensure we end with a newline if not exactly 16 bytes per line
+                }
             }
 
             Ok(())
