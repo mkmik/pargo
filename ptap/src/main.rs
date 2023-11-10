@@ -69,7 +69,7 @@ fn dump_lda<W: Write>(buffer: &[u8], writer: &mut W) -> Result<()> {
             if load_address % 2 == 0 {
                 writeln!(writer, "Jump to address: 0x{:04X}", load_address)?;
             } else {
-                println!("Not jumping to program right after loading");
+                writeln!("Not jumping to program right after loading");
             }
             break;
         }
@@ -94,20 +94,20 @@ fn dump_lda<W: Write>(buffer: &[u8], writer: &mut W) -> Result<()> {
         }
 
         // Print block info
-        println!("Block info:");
-        println!("Byte count: {}", byte_count - 6);
-        println!("Load address: 0x{:04X}", load_address);
+        writeln!("Block info:");
+        writeln!("Byte count: {}", byte_count - 6);
+        writeln!("Load address: 0x{:04X}", load_address);
 
         // Print hexdump
-        println!("Hexdump:");
+        writeln!("Hexdump:");
         for (index, byte) in program_data.iter().enumerate() {
-            print!("{:02X} ", byte);
+            write!("{:02X} ", byte);
             if (index + 1) % 16 == 0 {
-                println!();
+                writeln!();
             }
         }
         if program_data.len() % 16 != 0 {
-            println!(); // Ensure we end with a newline if not exactly 16 bytes per line
+            writeln!(); // Ensure we end with a newline if not exactly 16 bytes per line
         }
     }
 
@@ -124,10 +124,10 @@ mod tests {
         let sample_data = vec![
             0x00, 0x00, // Leader bytes
             0x01, 0x00, // Start marker and pad
-            0x06, 0x00, // Byte count (6 bytes, including header)
+            0x0A, 0x00, // Byte count (6 bytes, including header)
             0x02, 0x04, // Load address (0x0402)
-            0x01, 0x02, 0x03, // Program data
-            0xF7, // Checksum (0x01 + 0x00 + 0x06 + 0x00 + 0x02 + 0x04 + 0x01 + 0x02 + 0x03 = 0x19, 0x100 - 0x19 = 0xE7)
+            0x01, 0x02, 0x03, 0x4,  // Program data
+            0xE5, // Checksum (0x01 + 0x00 + 0x0A + 0x00 + 0x02 + 0x04 + 0x01 + 0x02 + 0x03 + 0x04 = 0x1B; 0x1B + ??? = 0)
         ];
 
         // Cursor for capturing the output
@@ -145,7 +145,7 @@ mod tests {
             Byte count: 3\n\
             Load address: 0x0402\n\
             Hexdump:\n\
-            01 02 03 \n";
+            01 02 03 04\n";
 
         // Assert that the output is as expected
         assert_eq!(output_string, expected_output);
