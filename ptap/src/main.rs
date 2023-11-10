@@ -102,17 +102,9 @@ fn dump_lda<W: Write>(buffer: &[u8], writer: &mut W) -> Result<()> {
         writeln!(writer, "Byte count: {}", byte_count - 6)?;
         writeln!(writer, "Load address: 0x{:04X}", load_address)?;
 
-        // Print hexdump
-        writeln!(writer, "Hexdump:")?;
-        for (index, byte) in program_data.iter().enumerate() {
-            write!(writer, "{:02X} ", byte)?;
-            if (index + 1) % 16 == 0 {
-                writeln!(writer)?;
-            }
-        }
-        if program_data.len() % 16 != 0 {
-            writeln!(writer)?; // Ensure we end with a newline if not exactly 16 bytes per line
-        }
+        // Use rhexdump to print hexdump
+        let hexdump = rhexdump::hexdump(program_data);
+        writeln!(writer, "{}", hexdump)?;
     }
 
     if cursor >= buffer.len() && !end_block_encountered {
