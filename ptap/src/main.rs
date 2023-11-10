@@ -151,6 +151,12 @@ mod tests {
             0x02, 0x04, // Load address (0x0402)
             0x01, 0x02, 0x03, 0x4,  // Program data
             0xE5, // Checksum (0x01 + 0x00 + 0x0A + 0x00 + 0x02 + 0x04 + 0x01 + 0x02 + 0x03 + 0x04 = 0x1B; 0x1B + ??? = 0)
+            // End block
+            0x01, 0x00, // Start marker and pad for end block
+            0x06, 0x00, // Byte count for end block (6 bytes, including header)
+            0x01, 0x00, // Load address for end block (odd address, e.g., 1)
+            // No program data for end block
+            0xFB, // Checksum for end block
         ];
 
         // Cursor for capturing the output
@@ -168,7 +174,8 @@ mod tests {
             Byte count: 4\n\
             Load address: 0x0402\n\
             Hexdump:\n\
-            01 02 03 04 \n";
+            01 02 03 04 \n\
+            Not jumping to program right after loading\n";
 
         // Assert that the output is as expected
         assert_eq!(output_string, expected_output);
@@ -185,6 +192,12 @@ mod tests {
             0x02, 0x04, // Load address (0x0402)
             0x01, 0x02, 0x03, 0x4,  // Program data
             0xE5, // Checksum (0x01 + 0x00 + 0x0A + 0x00 + 0x02 + 0x04 + 0x01 + 0x02 + 0x03 + 0x04 = 0x1B; 0x1B + ??? = 0)
+            // End block
+            0x01, 0x00, // Start marker and pad for end block
+            0x06, 0x00, // Byte count for end block (6 bytes, including header)
+            0x01, 0x00, // Load address for end block (odd address, e.g., 1)
+            // No program data for end block
+            0xFB, // Checksum for end block
         ];
 
         // Cursor for capturing the output
@@ -202,7 +215,8 @@ mod tests {
             Byte count: 4\n\
             Load address: 0x0402\n\
             Hexdump:\n\
-            01 02 03 04 \n";
+            01 02 03 04 \n\
+            Not jumping to program right after loading\n";
 
         // Assert that the output is as expected
         assert_eq!(output_string, expected_output);
@@ -225,6 +239,12 @@ mod tests {
             0x02, 0x04, // Load address (0x0402)
             0x01, 0x02, 0x03, 0x4,  // Program data
             0xE5, // Checksum (0x01 + 0x00 + 0x0A + 0x00 + 0x02 + 0x04 + 0x01 + 0x02 + 0x03 + 0x04 = 0x1B; 0x1B + ??? = 0)
+            // End block
+            0x01, 0x00, // Start marker and pad for end block
+            0x06, 0x00, // Byte count for end block (6 bytes, including header)
+            0x01, 0x00, // Load address for end block (odd address, e.g., 1)
+            // No program data for end block
+            0xFB, // Checksum for end block
         ];
 
         // Cursor for capturing the output
@@ -247,7 +267,8 @@ mod tests {
             Byte count: 4\n\
             Load address: 0x0402\n\
             Hexdump:\n\
-            01 02 03 04 \n";
+            01 02 03 04 \n\
+            Not jumping to program right after loading\n";
 
         // Assert that the output is as expected
         assert_eq!(output_string, expected_output);
