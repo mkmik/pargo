@@ -1,5 +1,5 @@
 [package]
-name = "rdp11"
+name = "ptap"
 version = "0.1.0"
 edition = "2021"
 
