@@ -4,14 +4,11 @@ use clap::Parser;
 #[derive(Parser)]
 #[clap(author, version, about, long_about = None)]
 struct Opts {
-    /// An example option, use more meaningful names and descriptions for your application.
-    #[clap(short, long)]
-    example_option: String,
 }
 
 fn main() {
     let opts: Opts = Opts::parse();
 
-    // Use the options here
-    println!("The provided example option is: {}", opts.example_option);
+    // The example_option has been removed, so the usage here should be updated accordingly.
+    // For now, the main function will be empty.
 }
