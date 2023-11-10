@@ -1,6 +1,7 @@
 use anyhow::Result;
 use clap::Parser;
-use std::io::{self};
+use rhexdump::prelude::*;
+use std::io::{self, Cursor};
 use thiserror::Error;
 
 /// This struct defines the command line arguments we accept.
@@ -38,6 +39,16 @@ pub enum Error {
 use std::io::Write;
 
 fn dump_lda<W: Write>(buffer: &[u8], writer: &mut W) -> Result<()> {
+    let group_size = GroupSize::Word;
+    let dumper = RhexdumpBuilder::new()
+        .base(Base::Oct)
+        .endianness(Endianness::LittleEndian)
+        .bit_width(BitWidth::BW32)
+        .group_size(group_size)
+        .groups_per_line(16 / (group_size as usize))
+        .hide_duplicate_lines(true)
+        .build();
+
     let mut cursor = 0;
     let mut end_block_encountered = false;
     while cursor < buffer.len() {
@@ -48,7 +59,6 @@ fn dump_lda<W: Write>(buffer: &[u8], writer: &mut W) -> Result<()> {
 
         // Expecting a block start or end of file
         if cursor >= buffer.len() {
-            end_block_encountered = true;
             break;
         }
 
@@ -70,6 +80,7 @@ fn dump_lda<W: Write>(buffer: &[u8], writer: &mut W) -> Result<()> {
 
         // Check for end-of-input condition
         if byte_count == 6 {
+            end_block_encountered = true;
             if load_address % 2 == 0 {
                 writeln!(writer, "Jump to address: {:o}", load_address)?;
             } else {
@@ -103,8 +114,11 @@ fn dump_lda<W: Write>(buffer: &[u8], writer: &mut W) -> Result<()> {
         writeln!(writer, "Load address: 0x{:04X}", load_address)?;
 
         // Use rhexdump to print hexdump
-        let hexdump = rhexdump::hexdump(program_data);
-        writeln!(writer, "{}", hexdump)?;
+        dumper.hexdump_offset(
+            writer,
+            &mut Cursor::new(program_data),
+            load_address.try_into().unwrap(),
+        );
     }
 
     if cursor >= buffer.len() && !end_block_encountered {
