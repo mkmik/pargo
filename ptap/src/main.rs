@@ -39,6 +39,7 @@ use std::io::Write;
 
 fn dump_lda<W: Write>(buffer: &[u8], writer: &mut W) -> Result<()> {
     let mut cursor = 0;
+    let mut end_block_encountered = false;
     while cursor < buffer.len() {
         // Skip leader bytes (0x00)
         while cursor < buffer.len() && buffer[cursor] == 0x00 {
@@ -47,6 +48,7 @@ fn dump_lda<W: Write>(buffer: &[u8], writer: &mut W) -> Result<()> {
 
         // Expecting a block start or end of file
         if cursor >= buffer.len() {
+            end_block_encountered = true;
             break;
         }
 
