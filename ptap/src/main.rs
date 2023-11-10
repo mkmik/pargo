@@ -142,10 +142,10 @@ mod tests {
         // Expected output
         let expected_output = "\
             Block info:\n\
-            Byte count: 3\n\
+            Byte count: 4\n\
             Load address: 0x0402\n\
             Hexdump:\n\
-            01 02 03 04\n";
+            01 02 03 04 \n";
 
         // Assert that the output is as expected
         assert_eq!(output_string, expected_output);
