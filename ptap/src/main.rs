@@ -89,8 +89,8 @@ fn main() -> Result<()> {
                 let checksum = buffer[cursor];
                 cursor += 1;
 
-                // Calculate checksum
-                let calculated_checksum: u8 = program_data.iter().fold(0, |acc, &x| acc.wrapping_add(x));
+                // Calculate checksum excluding the checksum byte itself
+                let calculated_checksum: u8 = program_data.iter().fold(0, |acc, &x| acc.wrapping_add(x)) + 1;
                 
                 // Verify checksum
                 if calculated_checksum != checksum {
