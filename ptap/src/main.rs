@@ -120,9 +120,7 @@ fn main() -> Result<()> {
 
     match opts.command {
         Commands::Dump { filename } => {
-            let mut file = File::open(filename)?;
-            let mut buffer = Vec::new();
-            file.read_to_end(&mut buffer)?;
+            let buffer = std::fs::read(filename)?;
             let stdout = io::stdout();
             let mut handle = stdout.lock();
             dump_lda(&buffer, &mut handle)?;
