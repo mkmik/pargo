@@ -19,9 +19,10 @@ enum Commands {
 }
 
 use std::fs::File;
-use std::io::{self, Read, ErrorKind};
+use anyhow::Result;
+use std::io::Read;
 
-fn main() -> io::Result<()> {
+fn main() -> Result<()> {
     let opts: Opts = Opts::parse();
 
     match opts.command {
