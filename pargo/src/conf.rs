@@ -14,5 +14,6 @@ pub struct Program {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum Platform {
+    #[serde(rename = "pdp11")]
     Pdp11,
 }
