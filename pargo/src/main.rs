@@ -1,6 +1,7 @@
+use clap::Parser;
 use thiserror::Error;
 
-#[derive(Error, Debug)]
+#[derive(Parser, Error, Debug)]
 pub enum Error {
     #[error("An example error occurred")]
     ExampleError,
@@ -20,9 +21,11 @@ struct Opts {
 #[derive(Parser)]
 enum Commands {
     /// Build an binary
+    #[clap(name = "build")]
     Build {},
 
     /// Build a binary and load the binary in the simulator
+    #[clap(name = "run")]
     Run {},
 }
 
