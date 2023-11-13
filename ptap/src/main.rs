@@ -319,3 +319,5 @@ mod tests {
         Ok(())
     }
 }
+// Type alias for Result with the custom Error type
+type Result<T> = std::result::Result<T, Error>;
