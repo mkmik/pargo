@@ -7,7 +7,7 @@ pub enum PargoError {
     ExampleError,
 }
 
-fn main() -> Result<(), PargoError> {
+fn main() -> Result<()> {
     println!("Hello, pargo!");
     // Here you can use your custom error type with `?` or return it explicitly
     // For demonstration purposes, let's return an error
