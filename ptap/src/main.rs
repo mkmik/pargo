@@ -128,7 +128,7 @@ fn dump_lda<W: Write>(buffer: &[u8], writer: &mut W) -> Result<(), Error> {
     }
 }
 
-fn main() -> Result<()> {
+fn main() -> Result<(), Error> {
     let opts: Opts = Opts::parse();
 
     match opts.command {
