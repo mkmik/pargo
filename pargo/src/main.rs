@@ -56,6 +56,7 @@ fn main() -> Result<()> {
 
     let project_path = std::env::current_dir()?;
     let target_dir = project_path.join("target");
+    std::fs::create_dir_all(&target_dir)?;
     let config = read_conf(project_path)?;
     let env = Env { config, target_dir };
 
