@@ -4,16 +4,20 @@ use crate::conf::Config;
 
 pub struct Env {
     pub config: Config,
-    target_dir: PathBuf,
+    pub base_dir: PathBuf,
 }
 
 impl Env {
+    pub fn src_dir(&self) -> PathBuf {
+        self.base_dir.join("src")
+    }
+
     pub fn build_dir(&self) -> std::io::Result<PathBuf> {
-        join(&self.target_dir, "build")
+        join(self.target_dir()?, "build")
     }
 
     pub fn target_dir(&self) -> std::io::Result<PathBuf> {
-        join(&self.target_dir, "build")
+        join(&self.base_dir, "target")
     }
 }
 

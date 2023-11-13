@@ -1,8 +1,7 @@
 use clap::Parser;
 use pargo::{conf::Config, env::Env};
-use std::path::PathBuf;
+use std::path::Path;
 use thiserror::Error;
-use toml;
 
 #[derive(Error, Debug)]
 pub enum Error {
@@ -37,14 +36,15 @@ enum Commands {
 
 use std::fs;
 
-fn read_conf(path: PathBuf) -> Result<Config> {
-    let config_path = path.join("Pargo.toml");
+fn read_conf(path: impl AsRef<Path>) -> Result<Config> {
+    let config_path = path.as_ref().join("Pargo.toml");
     let config_contents = fs::read_to_string(config_path)?;
     Ok(toml::from_str(&config_contents)?)
 }
 
 fn build(env: &Env) -> Result<()> {
     let build_dir = env.build_dir()?;
+    println!("build dir: {}", build_dir.display());
     Ok(())
 }
 
@@ -54,11 +54,9 @@ fn run(_env: &Env) -> Result<()> {
 
 // Function to create the environment
 fn create_env() -> Result<Env> {
-    let project_path = std::env::current_dir()?;
-    let target_dir = project_path.join("target");
-    std::fs::create_dir_all(&target_dir)?;
-    let config = read_conf(project_path)?;
-    Ok(Env { config, target_dir })
+    let base_dir = std::env::current_dir()?;
+    let config = read_conf(&base_dir)?;
+    Ok(Env { config, base_dir })
 }
 
 fn main() -> Result<()> {
