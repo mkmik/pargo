@@ -179,8 +179,7 @@ mod tests {
             Block info:\n\
             Byte count: 4\n\
             Load address: 0x0402\n\
-            Hexdump:\n\
-            01 02 03 04 \n\
+            00000402: 001001 002003                                            ....\n\
             Not jumping to program right after loading\n";
 
         // Assert that the output is as expected
@@ -221,8 +220,7 @@ mod tests {
             Block info:\n\
             Byte count: 4\n\
             Load address: 0x0402\n\
-            Hexdump:\n\
-            01 02 03 04 \n\
+            00000402: 001001 002003                                            ....\n\
             Jump to address: 1000\n";
 
         // Assert that the output is as expected
@@ -262,8 +260,7 @@ mod tests {
             Block info:\n\
             Byte count: 4\n\
             Load address: 0x0402\n\
-            Hexdump:\n\
-            01 02 03 04 \n\
+            00000402: 001001 002003                                            ....\n\
             Not jumping to program right after loading\n";
 
         // Assert that the output is as expected
@@ -309,13 +306,11 @@ mod tests {
             Block info:\n\
             Byte count: 4\n\
             Load address: 0x0402\n\
-            Hexdump:\n\
-            01 02 03 04 \n\
+            00000402: 001001 002003                                            ....\n\
             Block info:\n\
             Byte count: 4\n\
             Load address: 0x0402\n\
-            Hexdump:\n\
-            01 02 03 04 \n\
+            00000402: 001001 002003                                            ....\n\
             Not jumping to program right after loading\n";
 
         // Assert that the output is as expected
