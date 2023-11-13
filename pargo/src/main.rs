@@ -1,5 +1,5 @@
 use clap::Parser;
-use pargo::conf::Config;
+use pargo::{conf::Config, env::Env};
 use std::path::PathBuf;
 use thiserror::Error;
 use toml;
@@ -40,19 +40,30 @@ use std::fs;
 fn read_conf(path: PathBuf) -> Result<Config> {
     let config_path = path.join("Pargo.toml");
     let config_contents = fs::read_to_string(config_path)?;
-    let config = toml::from_str(&config_contents)?;
-    Ok(config)
+    Ok(toml::from_str(&config_contents)?)
+}
+
+fn build(_env: &Env) -> Result<()> {
+    Ok(())
+}
+
+fn run(_env: &Env) -> Result<()> {
+    Ok(())
 }
 
 fn main() -> Result<()> {
     let opts: Opts = Opts::parse();
 
-    let conf = read_conf(std::env::current_dir()?)?;
+    let project_path = std::env::current_dir()?;
+    let target_dir = project_path.join("target");
+    let config = read_conf(project_path)?;
+    let env = Env { config, target_dir };
 
     match opts.command {
-        Commands::Build {} => todo!(),
+        Commands::Build {} => build(&env)?,
         Commands::Run {} => {
-            println!("TODO...{:?}", conf)
+            build(&env)?;
+            run(&env)?;
         }
     }
 
