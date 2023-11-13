@@ -1,5 +1,5 @@
 use clap::Parser;
-use pargo::conf::Program;
+use pargo::conf::Config;
 use std::path::PathBuf;
 use thiserror::Error;
 use toml;
@@ -8,6 +8,9 @@ use toml;
 pub enum Error {
     #[error("An IO error occurred: {0}")]
     IoError(#[from] std::io::Error),
+
+    #[error("Toml decode error: {0}")]
+    TomlDecodeError(#[from] toml::de::Error),
 }
 
 // Type alias for Result with the custom Error type
@@ -34,11 +37,11 @@ enum Commands {
 
 use std::fs;
 
-fn read_conf(path: PathBuf) -> Result<Program> {
+fn read_conf(path: PathBuf) -> Result<Config> {
     let config_path = path.join("Pargo.toml");
     let config_contents = fs::read_to_string(config_path)?;
-    let program: Program = toml::from_str(&config_contents)?;
-    Ok(program)
+    let config = toml::from_str(&config_contents)?;
+    Ok(config)
 }
 
 fn main() -> Result<()> {
