@@ -2,6 +2,7 @@ use clap::Parser;
 use pargo::conf::Program;
 use std::path::PathBuf;
 use thiserror::Error;
+use toml;
 
 #[derive(Error, Debug)]
 pub enum Error {
@@ -31,8 +32,13 @@ enum Commands {
     Run {},
 }
 
-fn read_conf(_path: PathBuf) -> Result<Program> {
-    todo!()
+use std::fs;
+
+fn read_conf(path: PathBuf) -> Result<Program> {
+    let config_path = path.join("Pargo.toml");
+    let config_contents = fs::read_to_string(config_path)?;
+    let program: Program = toml::from_str(&config_contents)?;
+    Ok(program)
 }
 
 fn main() -> Result<()> {
