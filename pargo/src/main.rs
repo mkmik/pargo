@@ -51,14 +51,19 @@ fn run(_env: &Env) -> Result<()> {
     Ok(())
 }
 
-fn main() -> Result<()> {
-    let opts: Opts = Opts::parse();
-
+// Function to create the environment
+fn create_env() -> Result<Env> {
     let project_path = std::env::current_dir()?;
     let target_dir = project_path.join("target");
     std::fs::create_dir_all(&target_dir)?;
     let config = read_conf(project_path)?;
-    let env = Env { config, target_dir };
+    Ok(Env { config, target_dir })
+}
+
+fn main() -> Result<()> {
+    let opts: Opts = Opts::parse();
+
+    let env = create_env()?;
 
     match opts.command {
         Commands::Build {} => build(&env)?,
