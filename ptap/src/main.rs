@@ -1,6 +1,7 @@
+use std::io::{self, Cursor, Write};
+
 use clap::Parser;
 use rhexdump::prelude::*;
-use std::io::{self, Cursor};
 use thiserror::Error;
 
 /// This struct defines the command line arguments we accept.
@@ -35,7 +36,7 @@ pub enum Error {
     MissingEndBlock,
 }
 
-use std::io::Write;
+type Result<T, E = Error> = std::result::Result<T, E>;
 
 fn dump_lda<W: Write>(buffer: &[u8], writer: &mut W) -> Result<()> {
     let group_size = GroupSize::Word;
@@ -62,13 +63,13 @@ fn dump_lda<W: Write>(buffer: &[u8], writer: &mut W) -> Result<()> {
         }
 
         if buffer[cursor] != 0x01 {
-            return Err(Error::InvalidStartMarker.into());
+            return Err(Error::InvalidStartMarker);
         }
         let block_start = cursor;
         cursor += 1; // Skip start marker
 
         if buffer[cursor] != 0x00 {
-            return Err(Error::InvalidPad.into());
+            return Err(Error::InvalidPad);
         }
         cursor += 1; // Skip pad
 
@@ -104,7 +105,7 @@ fn dump_lda<W: Write>(buffer: &[u8], writer: &mut W) -> Result<()> {
 
         // Verify checksum by checking if the calculated checksum is zero
         if calculated_checksum != 0 {
-            return Err(Error::InvalidChecksum.into());
+            return Err(Error::InvalidChecksum);
         }
 
         // Print block info
@@ -121,7 +122,7 @@ fn dump_lda<W: Write>(buffer: &[u8], writer: &mut W) -> Result<()> {
     }
 
     if cursor >= buffer.len() && !end_block_encountered {
-        Err(Error::MissingEndBlock.into())
+        Err(Error::MissingEndBlock)
     } else {
         Ok(())
     }
@@ -318,5 +319,3 @@ mod tests {
         Ok(())
     }
 }
-// Type alias for Result with the custom Error type
-type Result<T> = std::result::Result<T, Error>;
