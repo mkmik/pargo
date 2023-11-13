@@ -1,4 +1,4 @@
-use anyhow::Result;
+use std::result::Result;
 use clap::Parser;
 use rhexdump::prelude::*;
 use std::io::{self, Cursor};
@@ -38,7 +38,7 @@ pub enum Error {
 
 use std::io::Write;
 
-fn dump_lda<W: Write>(buffer: &[u8], writer: &mut W) -> Result<()> {
+fn dump_lda<W: Write>(buffer: &[u8], writer: &mut W) -> Result<(), Error> {
     let group_size = GroupSize::Word;
     let dumper = RhexdumpBuilder::new()
         .base(Base::Oct)
