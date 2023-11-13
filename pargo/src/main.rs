@@ -1,6 +1,6 @@
 use clap::Parser;
 use pargo::{conf::Config, env::Env};
-use std::path::Path;
+use std::path::{Path, PathBuf};
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -10,6 +10,9 @@ pub enum Error {
 
     #[error("Toml decode error: {0}")]
     TomlDecodeError(#[from] toml::de::Error),
+
+    #[error("File not found: {0}")]
+    FileNotFoundError(PathBuf),
 }
 
 // Type alias for Result with the custom Error type
@@ -50,8 +53,14 @@ fn create_env() -> Result<Env> {
 }
 
 fn build(env: &Env) -> Result<()> {
+    let src_dir = env.src_dir();
+    let asm_file_path = src_dir.join("main.asm2");
+    if !asm_file_path.exists() {
+        return Err(Error::FileNotFoundError(asm_file_path));
+    }
     let build_dir = env.build_dir()?;
     println!("build dir: {}", build_dir.display());
+    // TODO: Implement the actual build logic here
     Ok(())
 }
 
