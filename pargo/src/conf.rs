@@ -1,4 +1,9 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Config {
+    pub program: Program,
+}
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Program {
@@ -7,7 +12,7 @@ pub struct Program {
     pub platform: Platform,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub enum Platform {
-    PDP11,
+    Pdp11,
 }
