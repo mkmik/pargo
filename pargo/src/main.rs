@@ -1,10 +1,12 @@
 use clap::Parser;
+use pargo::conf::Program;
+use std::path::PathBuf;
 use thiserror::Error;
 
-#[derive(Parser, Error, Debug)]
+#[derive(Error, Debug)]
 pub enum Error {
-    #[error("An example error occurred")]
-    ExampleError,
+    #[error("An IO error occurred: {0}")]
+    IoError(#[from] std::io::Error),
 }
 
 // Type alias for Result with the custom Error type
@@ -29,16 +31,19 @@ enum Commands {
     Run {},
 }
 
+fn read_conf(_path: PathBuf) -> Result<Program> {
+    todo!()
+}
+
 fn main() -> Result<()> {
     let opts: Opts = Opts::parse();
+
+    let conf = read_conf(std::env::current_dir()?)?;
 
     match opts.command {
         Commands::Build {} => todo!(),
         Commands::Run {} => {
-            match std::env::current_dir() {
-                Ok(dir) => println!("Current directory: {:?}", dir),
-                Err(e) => eprintln!("Error getting current directory: {}", e),
-            }
+            println!("TODO...{:?}", conf)
         }
     }
 
