@@ -35,7 +35,10 @@ fn main() -> Result<()> {
     match opts.command {
         Commands::Build {} => todo!(),
         Commands::Run {} => {
-            println!("TODO");
+            match std::env::current_dir() {
+                Ok(dir) => println!("Current directory: {:?}", dir),
+                Err(e) => eprintln!("Error getting current directory: {}", e),
+            }
         }
     }
 
