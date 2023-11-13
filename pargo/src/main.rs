@@ -43,7 +43,8 @@ fn read_conf(path: PathBuf) -> Result<Config> {
     Ok(toml::from_str(&config_contents)?)
 }
 
-fn build(_env: &Env) -> Result<()> {
+fn build(env: &Env) -> Result<()> {
+    let build_dir = env.build_dir()?;
     Ok(())
 }
 
