@@ -1,4 +1,4 @@
-use anyhow::Result;
+
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -7,7 +7,7 @@ pub enum PargoError {
     ExampleError,
 }
 
-fn main() -> Result<()> {
+fn main() -> Result<(), PargoError> {
     println!("Hello, pargo!");
     // Here you can use your custom error type with `?` or return it explicitly
     // For demonstration purposes, let's return an error
