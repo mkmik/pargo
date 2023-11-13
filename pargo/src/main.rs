@@ -30,8 +30,14 @@ enum Commands {
 }
 
 fn main() -> Result<()> {
-    println!("Hello, pargo!");
-    // Here you can use your custom error type with `?` or return it explicitly
-    // For demonstration purposes, let's return an error
-    Err(Error::ExampleError)
+    let opts: Opts = Opts::parse();
+
+    match opts.command {
+        Commands::Build {} => todo!(),
+        Commands::Run {} => {
+            println!("TODO");
+        }
+    }
+
+    Ok(())
 }

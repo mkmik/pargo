@@ -1,0 +1,8 @@
+[program]
+name = "echo"
+version = "0.1.0"
+platform = "pdp11"
+
+[pdp11]
+cpu = "11/70"
+mem = "16K"
