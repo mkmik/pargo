@@ -42,6 +42,13 @@ fn read_conf(path: impl AsRef<Path>) -> Result<Config> {
     Ok(toml::from_str(&config_contents)?)
 }
 
+// Function to create the environment
+fn create_env() -> Result<Env> {
+    let base_dir = std::env::current_dir()?;
+    let config = read_conf(&base_dir)?;
+    Ok(Env { config, base_dir })
+}
+
 fn build(env: &Env) -> Result<()> {
     let build_dir = env.build_dir()?;
     println!("build dir: {}", build_dir.display());
@@ -50,13 +57,6 @@ fn build(env: &Env) -> Result<()> {
 
 fn run(_env: &Env) -> Result<()> {
     Ok(())
-}
-
-// Function to create the environment
-fn create_env() -> Result<Env> {
-    let base_dir = std::env::current_dir()?;
-    let config = read_conf(&base_dir)?;
-    Ok(Env { config, base_dir })
 }
 
 fn main() -> Result<()> {
