@@ -1,5 +1,5 @@
 [workspace]
 resolver = "2"
 
-members = ["ptap", "pargo"]
+members = ["lda", "pargo"]
 default-members = ["pargo"]
