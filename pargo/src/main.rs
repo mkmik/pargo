@@ -54,7 +54,7 @@ fn create_env() -> Result<Env> {
 
 fn build(env: &Env) -> Result<()> {
     let src_dir = env.src_dir();
-    let asm_file_path = src_dir.join("main.asm2");
+    let asm_file_path = src_dir.join("main.asm");
     if !asm_file_path.exists() {
         return Err(Error::FileNotFoundError(asm_file_path));
     }
