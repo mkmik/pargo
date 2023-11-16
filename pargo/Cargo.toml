@@ -7,8 +7,7 @@ edition.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-thiserror = "1.0"
+thiserror = "1"
 clap = { version = "4", features = ["derive", "env", "cargo"] }
-serde = { version = "1.0", features = ["derive"] }
-toml = "0.5.8"
-non-empty-string = "0.2.4"
+serde = { version = "1", features = ["derive"] }
+toml = "0"
