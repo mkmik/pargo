@@ -3,3 +3,8 @@ resolver = "2"
 
 members = ["lda", "pargo"]
 default-members = ["pargo"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+authors = ["Marko Mikulicic <mmikulicic@gmail.com"]
